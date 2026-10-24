@@ -1,0 +1,26 @@
+name: .NET Core CI
+
+on:
+  push:
+    branches: [ "develop", "feature/**" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '6.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore Homies.sln
+
+    - name: Build
+      run: dotnet build Homies.sln --configuration Release --no-restore
+
+    - name: Test
+      run: dotnet test Homies.sln --configuration Release --no-build --verbosity normal
